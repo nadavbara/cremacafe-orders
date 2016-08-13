@@ -193,10 +193,6 @@ export default class Example extends Component {
         </Collapsible>
         </View>
 
-        <View>
-          
-        </View>
-
     );
   }
 }
