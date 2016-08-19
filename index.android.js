@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import Product from './components/Product';
+import ProductsList from './containers/ProductsList';
 
 const MK = require('react-native-material-kit');
 
@@ -45,10 +46,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     fontWeight: '500',
+    fontFamily: 'Roboto'
   },
   content: {
-  	borderColor: '#EE7600',
-  	borderWidth: 1,
+  	borderTopColor: '#EE7600',
+  	borderTopWidth: 1,
+    borderBottomColor: '#EE7600',
+    borderBottomWidth: 1,
     flex: 1,
     padding: 20,
     height: 300,
@@ -59,13 +63,6 @@ const styles = StyleSheet.create({
     
     
   },
-  scrollView: {
-
-  },
-
-  row:{
-  	height: 80,
-  }
 });
 
 const ColoredRaisedButton = MKButton.coloredButton()
@@ -76,50 +73,17 @@ const ColoredRaisedButton = MKButton.coloredButton()
   .build();
 
 
- var testData = [
- 	{'productAmount':'2', 'productSum':'15.5', 'comments':'בלי קצף', 'productDetails':'כריך טונה, שתייה, זיתים', 'productName':'כריך טונה'},
- 	{'productAmount':'2', 'productSum':'15.5', 'comments':'בלי קצף', 'productDetails':'כריך טונה, שתייה, זיתים', 'productName':'כריך טונה'},
- ];
-
 export default class Example extends Component {
 	constructor(props){
 		super(props);
-		ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-		this.state = {
-			collapsed: true,
-			dataSource : ds.cloneWithRows(testData),
-		};
+		
+		this.state = {collapsed: true,};
 	}
 
   _toggleExpanded = () => {
     this.setState({ collapsed: !this.state.collapsed });
   }
-
-  buttonClicked = () => {
-  	Alert.alert('title','message');
-  }
-
-  renderRow = (rowData) => {
-
-    return (
-    	<View style={styles.row}>
-    		<Product {...rowData}/>
-    	</View>
-    	)
-  }
-
-  renderSeparator =  (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {
-    return (
-      <View
-        key={`${sectionID}-${rowID}`}
-        style={{
-          height: 4,
-          backgroundColor: '#EE7600',
-        }}
-      />
-    );
-  };
-
+  
   render() {
     return (
       <View style={styles.container}>
@@ -129,15 +93,9 @@ export default class Example extends Component {
             <Text style={styles.headerText}>Single Collapsible</Text>
           </View>
         </TouchableHighlight>
-        <Collapsible collapsed={this.state.collapsed} style={styles.content} align="center">
-          <View >
-          	<ListView style={styles.scrollView}
-          		scrollEventThrottle={200}
-          		dataSource={this.state.dataSource}
-          		renderRow={this.renderRow}
-          		renderSeparator = {this.renderSeparator}
-          		>
-            </ListView>
+        <Collapsible collapsed={this.state.collapsed} align="center">
+          <View style={styles.content}>
+          	<ProductsList orderId="456"/>
             <View style={styles.buttonHolder}>
             	<ColoredRaisedButton />
             </View>

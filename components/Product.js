@@ -1,26 +1,33 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import {
   Text,
   View,
+  StyleSheet,
 } from 'react-native';
 
-export default class Product extends Component{
+const styles = StyleSheet.create({
+	text:{
+		fontFamily:"VarelaRound-Regular",
+		fontWeight: 'bold'
+	},
+	textHolder:{
+		flex:1,
+		//flexWrap:'wrap',
+		flexDirection:'column',
+		justifyContent: 'center'
+	}
+})
 
-	
-
-	render(){
-		console.log(this.props)
-		const {productName,productDetails,comments,productAmount,productSum} = this.props;
+ const Product  = ({productName,productDetails,productExtraInfo,productAmount,productPrice}) => {
 		return(
-			<View>
-				<Text> פרטי ההזמנה:  {productDetails}</Text>
-				<Text> הערות הלקוח:  {comments}</Text>
-				<Text> כמות:                {productAmount}</Text>
-				<Text> סכום כולל:        {productSum} </Text>
-				
+			<View style={styles.textHolder}>
+				<Text style={styles.text}> פרטי ההזמנה:  {productDetails}</Text>
+				<Text style={styles.text}> הערות הלקוח:  {productExtraInfo}</Text>
+				<Text style={styles.text}> כמות:                 {productAmount}</Text>
+				<Text style={styles.text}> סכום כולל:        {productPrice} </Text>
 			</View>
 		)
-	}
-
 }
+
+export default Product;
