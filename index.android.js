@@ -5,64 +5,32 @@ import {
   StyleSheet,
   Text,
   View,
+  ListView,
+  ScrollView,
   TouchableHighlight,
 } from 'react-native';
 
+import Product from './components/Product';
 
+const MK = require('react-native-material-kit');
 
-import * as Animatable from 'react-native-animatable';
 import Collapsible from 'react-native-collapsible';
-import Accordion from 'react-native-collapsible/Accordion';
 
-const BACON_IPSUM = 'Bacon ipsum dolor amet chuck turducken landjaeger tongue spare ribs. Picanha beef prosciutto meatball turkey shoulder shank salami cupim doner jowl pork belly cow. Chicken shankle rump swine tail frankfurter meatloaf ground round flank ham hock tongue shank andouille boudin brisket. ';
+const {
+  MKButton,
+  MKColor,
+} = MK;
 
-const CONTENT = [
-  {
-    title: 'First',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Second',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Third',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Fourth',
-    content: BACON_IPSUM,
-  },
-  {
-    title: 'Fifth',
-    content: BACON_IPSUM,
-  },
-];
+MK.setTheme({
+	primaryColor: MKColor.DeepOrange,
+	accentColor: MKColor.Yellow,
+})
 
-const SELECTORS = [
-  {
-    title: 'First',
-    value: 0,
-  },
-  {
-    title : 'Second',
-    value: 1
-  },
-  {
-    title: 'Third',
-    value: 2,
-  },
-  {
-    title: 'None',
-    value: false,
-  },
-];
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'white'
   },
   title: {
     textAlign: 'center',
@@ -71,7 +39,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   header: {
-    backgroundColor: '#F5FCFF',
     padding: 10,
   },
   headerText: {
@@ -80,115 +47,100 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   content: {
+  	borderColor: '#EE7600',
+  	borderWidth: 1,
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    height: 300,
+    backgroundColor : 'white'
   },
-  active: {
-    backgroundColor: 'rgba(255,255,255,1)',
+  buttonHolder: {
+  	marginTop: 30,
+    
+    
   },
-  inactive: {
-    backgroundColor: 'rgba(245,252,255,1)',
+  scrollView: {
+
   },
-  selectors: {
-    marginBottom: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  selector: {
-    backgroundColor: '#F5FCFF',
-    padding: 10,
-  },
-  activeSelector: {
-    fontWeight: 'bold',
-  },
-  selectTitle: {
-    fontSize: 14,
-    fontWeight: '500',
-    padding: 10,
-  },
-  button: {
-    textAlign: 'center',
-    color: '#ffffff',
-    marginBottom: 7,
-    borderWidth: 1,
-    borderRadius: 2,
-  },
+
+  row:{
+  	height: 80,
+  }
 });
 
+const ColoredRaisedButton = MKButton.coloredButton()
+  .withText('ההזמנה מוכנה')
+  .withOnPress(() => {
+    console.log('pressed');
+  })
+  .build();
+
+
+ var testData = [
+ 	{'productAmount':'2', 'productSum':'15.5', 'comments':'בלי קצף', 'productDetails':'כריך טונה, שתייה, זיתים', 'productName':'כריך טונה'},
+ 	{'productAmount':'2', 'productSum':'15.5', 'comments':'בלי קצף', 'productDetails':'כריך טונה, שתייה, זיתים', 'productName':'כריך טונה'},
+ ];
+
 export default class Example extends Component {
-  state = {
-    activeSection: false,
-    collapsed: true,
-  };
+	constructor(props){
+		super(props);
+		ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+		this.state = {
+			collapsed: true,
+			dataSource : ds.cloneWithRows(testData),
+		};
+	}
 
   _toggleExpanded = () => {
     this.setState({ collapsed: !this.state.collapsed });
   }
 
-  _setSection(section) {
-    this.setState({ activeSection: section });
+  buttonClicked = () => {
+  	Alert.alert('title','message');
   }
 
-  _renderHeader(section, i, isActive) {
+  renderRow = (rowData) => {
+
     return (
-      <Animatable.View duration={400} style={[styles.header, isActive ? styles.active : styles.inactive]} transition="backgroundColor">
-        <Text style={styles.headerText}>{section.title}</Text>
-      </Animatable.View>
-    );
+    	<View style={styles.row}>
+    		<Product {...rowData}/>
+    	</View>
+    	)
   }
 
-  buttonClicked(e){
-    Alert.alert(
-  'Alert Title',
-  'My Alert Msg',
-  [
-    {text: 'Ask me in two days', onPress: () => console.log('Ask me later pressed')},
-    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-    {text: 'OK', onPress: () => console.log('OK Pressed')},
-  ]
-)
-  }
-
-  _renderContent(section, i, isActive) {
+  renderSeparator =  (sectionID: number, rowID: number, adjacentRowHighlighted: bool) => {
     return (
-      <Animatable.View duration={400}  style={[styles.content, isActive ? styles.active : styles.inactive]} transition="backgroundColor">
-        <Animatable.Text animation={isActive ? 'bounceIn' : undefined}>{section.content}</Animatable.Text>
-      </Animatable.View>
+      <View
+        key={`${sectionID}-${rowID}`}
+        style={{
+          height: 4,
+          backgroundColor: '#EE7600',
+        }}
+      />
     );
-  }
+  };
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Accordion Example</Text>
-
-        <View style={styles.selectors}>
-          <Text style={styles.selectTitle}>Select:</Text>
-          {SELECTORS.map(selector => (
-            <TouchableHighlight key={selector.title} onPress={this._setSection.bind(this, selector.value)}>
-              <View style={styles.selector}>
-                <Text style={selector.value === this.state.activeSection && styles.activeSelector}>
-                  {selector.title}
-                </Text>
-              </View>
-            </TouchableHighlight>
-          ))}
-        </View>
-
+        <Text style={styles.title}>Accordion Example</Text>      
         <TouchableHighlight onPress={this._toggleExpanded}>
           <View style={styles.header}>
             <Text style={styles.headerText}>Single Collapsible</Text>
           </View>
         </TouchableHighlight>
-        <Collapsible collapsed={this.state.collapsed} align="center">
-          <View style={styles.content}>
-            <Text>Bacon ipsum dolor amet chuck turducken landjaeger tongue spare ribs</Text>
-            <TouchableHighlight style={styles.button} onPress={this.buttonClicked.bind(this)}>
-              <View>
-                <Text style={styles.buttonText}>Button!</Text>
-              </View>
-            </TouchableHighlight>
+        <Collapsible collapsed={this.state.collapsed} style={styles.content} align="center">
+          <View >
+          	<ListView style={styles.scrollView}
+          		scrollEventThrottle={200}
+          		dataSource={this.state.dataSource}
+          		renderRow={this.renderRow}
+          		renderSeparator = {this.renderSeparator}
+          		>
+            </ListView>
+            <View style={styles.buttonHolder}>
+            	<ColoredRaisedButton />
+            </View>
           </View>
         </Collapsible>
         </View>
