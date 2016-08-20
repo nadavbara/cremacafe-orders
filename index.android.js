@@ -10,8 +10,8 @@ import {
   TouchableHighlight,
 } from 'react-native';
 
-import Product from './components/Product';
-import ProductsList from './containers/ProductsList';
+import OrdersList from './containers/OrdersList';
+import OrderContainer from './containers/OrderContainer';
 
 const MK = require('react-native-material-kit');
 
@@ -49,8 +49,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto'
   },
   content: {
-  	borderTopColor: '#EE7600',
-  	borderTopWidth: 1,
     borderBottomColor: '#EE7600',
     borderBottomWidth: 1,
     flex: 1,
@@ -83,24 +81,15 @@ export default class Example extends Component {
   _toggleExpanded = () => {
     this.setState({ collapsed: !this.state.collapsed });
   }
+
+  logButton = () => {
+    console.log('button pressed');
+  }
   
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Accordion Example</Text>      
-        <TouchableHighlight onPress={this._toggleExpanded}>
-          <View style={styles.header}>
-            <Text style={styles.headerText}>Single Collapsible</Text>
-          </View>
-        </TouchableHighlight>
-        <Collapsible collapsed={this.state.collapsed} align="center">
-          <View style={styles.content}>
-          	<ProductsList orderId="456"/>
-            <View style={styles.buttonHolder}>
-            	<ColoredRaisedButton />
-            </View>
-          </View>
-        </Collapsible>
+          <OrdersList/>
         </View>
 
     );

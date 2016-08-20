@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
 			<View style={styles.textHolder}>
 				<Text style={styles.text}> פרטי ההזמנה:  {productDetails}</Text>
 				<Text style={styles.text}> הערות הלקוח:  {productExtraInfo}</Text>
-				<Text style={styles.text}> כמות:                 {productAmount}</Text>
-				<Text style={styles.text}> סכום כולל:        {productPrice} </Text>
+				<Text style={styles.text}> כמות:                 {productAmount} יחידות</Text>
+				<Text style={styles.text}> סכום:                 {productPrice} ש"ח</Text>
 			</View>
 		)
 }
