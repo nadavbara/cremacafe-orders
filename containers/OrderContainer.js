@@ -15,8 +15,10 @@ import Order from '../components/Order';
 const styles = StyleSheet.create({
 header: {
     padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: 'orange',
+    borderWidth: 1,
+    borderColor: 'orange',
+    borderRadius: 10,
+    marginTop: 1,
     flex:1,
     flexDirection:'row-reverse',
     justifyContent:'space-between',
@@ -61,7 +63,8 @@ export default class OrderContainer extends Component{
 	}
 
 	fetchOrderDetails(orderId){
-		var url = 'http://192.168.0.109:5000/admin/orders/'+orderId;
+		var type = this.props.type;
+		var url = 'http://192.168.43.64:5000/admin/'+type+'/'+orderId;
 		fetch(url)
 				.then((response) => response.json())
 				.then((responseJson)=> {
@@ -81,7 +84,7 @@ export default class OrderContainer extends Component{
 	}
 
 	render(){	
-		const {orderId,onOrderReady} = this.props;
+		const {orderId,onOrderReady,type} = this.props;
 		return(
 			<View>
 				<TouchableHighlight onPress={this._toggleExpanded}>
@@ -92,7 +95,7 @@ export default class OrderContainer extends Component{
 					</View>
 				</TouchableHighlight>
 				<Collapsible collapsed={this.state.collapsed} align="center">
-					<Order totalAmount={this.state.totalAmount} orderId={orderId} onOrderReady={onOrderReady} products={this.state.orderProducts}/>
+					<Order type={type} totalAmount={this.state.totalAmount} orderId={orderId} onOrderReady={onOrderReady} products={this.state.orderProducts}/>
 				</Collapsible>
 			</View>
 		)

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import OrderContainer from './OrderContainer';
 
 import {
+  Alert,	
   Text,
   StyleSheet,
   ScrollView,
@@ -36,7 +37,8 @@ export default class OrdersList extends Component{
 		}
 
 		fetchNewOrders(){
-			var url = 'http://192.168.0.109:5000/admin/orders/new';
+			var type = this.props.type;
+			var url = 'http://192.168.43.64:5000/admin/'+type;
 			fetch(url)
 				.then((response) => response.json())
 				.then((responseJson)=> {
@@ -55,13 +57,25 @@ export default class OrdersList extends Component{
 		}
 
 		onOrderReady = (orderId) => {
-			console.log('order id is :' + orderId);
-			var url = 'http://192.168.0.109:5000/admin/orders/ready/'+orderId;
+			Alert.alert(
+				'הזמנה מוכנה',
+				'הודעה נשלחה ללקוח',
+				[{text:'אישור',onPress: () => this.onOrderReadyAPICall(orderId)}]
+			)
+		}
+
+		onOrderReadyAPICall = (orderId) => {
+			var type = this.props.type;
+			var url = 'http://192.168.43.64:5000/admin/orders/'+type+'/'+orderId;
 			fetch(url)
-				.then((response) => this.removeOrder(orderId))
+				.then((response) => {
+					this.removeOrder(orderId);
+					this.fetchNewOrders();
+					})
 				.catch((err) => {
 					console.log(err);
 				});
+
 		}
 
 		setOrderIds(ordersIds){
@@ -70,16 +84,14 @@ export default class OrdersList extends Component{
 		}
 
 		createOrderContainer(orderId,index){
-			return <OrderContainer key={index} orderId ={orderId} onOrderReady={this.onOrderReady.bind(this)}/>
+			var handler = this.props.type == 'new' ? this.onOrderReady.bind(this) : this.onOrderReadyAPICall.bind(this)
+			return <OrderContainer key={index} orderId ={orderId} type={this.props.type} onOrderReady={handler}/>
 		}
 
 		onRefresh(){
 			this.setState({isRefreshing: true});
 			this.fetchNewOrders();
 		}
-
-		
-
 
 		render(){
 			return(
