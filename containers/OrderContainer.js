@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Config from 'react-native-config';
 
 import {
   Alert,
@@ -6,6 +7,7 @@ import {
   StyleSheet,
   View,
   TouchableHighlight,
+  TouchableNativeFeedback,
 } from 'react-native';
 
 import Collapsible from 'react-native-collapsible';
@@ -64,7 +66,7 @@ export default class OrderContainer extends Component{
 
 	fetchOrderDetails(orderId){
 		var type = this.props.type;
-		var url = 'http://192.168.43.64:5000/admin/'+type+'/'+orderId;
+		var url = Config.admin_url+type+'/'+orderId;
 		fetch(url)
 				.then((response) => response.json())
 				.then((responseJson)=> {
@@ -87,13 +89,14 @@ export default class OrderContainer extends Component{
 		const {orderId,onOrderReady,type} = this.props;
 		return(
 			<View>
-				<TouchableHighlight onPress={this._toggleExpanded}>
+				<TouchableNativeFeedback onPress={this._toggleExpanded} 
+									     background={TouchableNativeFeedback.SelectableBackground()}>
 					<View style={styles.header}>
 						<Text style={styles.headerText}>{this.state.phoneNumber}</Text>
 						<Text style={styles.headerText}>{this.state.userName}</Text>
 						<Text style={styles.headerText}>{this.state.timeForPickup}</Text>
 					</View>
-				</TouchableHighlight>
+				</TouchableNativeFeedback>
 				<Collapsible collapsed={this.state.collapsed} align="center">
 					<Order type={type} totalAmount={this.state.totalAmount} orderId={orderId} onOrderReady={onOrderReady} products={this.state.orderProducts}/>
 				</Collapsible>

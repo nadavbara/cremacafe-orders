@@ -29,15 +29,19 @@ export default class Example extends Component {
 		super(props);
 	}
 
-	refreshReady = () => {
-		this.refs.ready.fetchNewOrders();
+	refreshReady = (tab) => {
+		if(tab.i == 0){
+			this.refs.ready.fetchNewOrders();
+		}else{
+			this.refs.new.fetchNewOrders();
+		}
 	}
   
   render() {
     return (
-      <ScrollableTabView onChangeTab={this.refreshReady}tabBarUnderlineColor='#EE7600' tabBarActiveTextColor='#EE7600'>
+      <ScrollableTabView onChangeTab={this.refreshReady} tabBarUnderlineColor='#EE7600' tabBarActiveTextColor='#EE7600'  initialPage={1}>
         <OrdersList ref="ready" type = "ready" tabLabel="מוכנות"/>
-      	<OrdersList type = "new" tabLabel="הזמנות"/>
+      	<OrdersList ref="new" type = "new" tabLabel="הזמנות"/>
       </ScrollableTabView>
 
     );

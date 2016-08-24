@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import OrderContainer from './OrderContainer';
+import Config from 'react-native-config';
 
 import {
   Alert,	
@@ -38,7 +39,7 @@ export default class OrdersList extends Component{
 
 		fetchNewOrders(){
 			var type = this.props.type;
-			var url = 'http://192.168.43.64:5000/admin/'+type;
+			var url = Config.admin_url+type;
 			fetch(url)
 				.then((response) => response.json())
 				.then((responseJson)=> {
@@ -66,7 +67,7 @@ export default class OrdersList extends Component{
 
 		onOrderReadyAPICall = (orderId) => {
 			var type = this.props.type;
-			var url = 'http://192.168.43.64:5000/admin/orders/'+type+'/'+orderId;
+			var url = Config.admin_orders_url+type+'/'+orderId;
 			fetch(url)
 				.then((response) => {
 					this.removeOrder(orderId);

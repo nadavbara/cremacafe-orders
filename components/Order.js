@@ -16,13 +16,8 @@ import {
 
 const styles = StyleSheet.create({
 	content: {
-  	//borderTopColor: '#EE7600',
-  	//borderTopWidth: 1,
-    //borderBottomColor: '#EE7600',
-    //borderBottomWidth: 1,
     flex: 1,
     padding: 20,
-    //height: 300,
     backgroundColor : 'white'
   },
   buttonHolder: {
@@ -43,7 +38,6 @@ const Order = (props) => {
 		const ColoredRaisedButton = MKButton.coloredButton()
 		.withText(text)
 		.withOnPress(() => {
-			console.log(orderId);
 			onOrderReady(orderId);
 		})
 		.build();

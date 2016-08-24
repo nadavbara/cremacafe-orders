@@ -2,4 +2,8 @@ rootProject.name = 'Example'
 
 include ':app'
 include ':RNMaterialKit'
+include ':react-native-config'
 project(':RNMaterialKit').projectDir = file('../node_modules/react-native-material-kit/android')
+
+project(':react-native-config').projectDir = new File(rootProject.projectDir,
+  '../node_modules/react-native-config/android')
