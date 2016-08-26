@@ -67,7 +67,12 @@ export default class OrderContainer extends Component{
 	fetchOrderDetails(orderId){
 		var type = this.props.type;
 		var url = Config.admin_url+type+'/'+orderId;
-		fetch(url)
+		fetch(url,{
+			headers:{
+					'X-Authoriztion-Admin': Config.admin_pass
+				},
+				'timeout':1000*5,
+		})
 				.then((response) => response.json())
 				.then((responseJson)=> {
 					this.extractValue(responseJson);

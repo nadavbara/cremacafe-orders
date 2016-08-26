@@ -40,7 +40,12 @@ export default class OrdersList extends Component{
 		fetchNewOrders(){
 			var type = this.props.type;
 			var url = Config.admin_url+type;
-			fetch(url)
+			fetch(url,{
+				headers:{
+					'X-Authoriztion-Admin': Config.admin_pass
+				},
+				'timeout':1000*5,
+			})
 				.then((response) => response.json())
 				.then((responseJson)=> {
 					this.setOrderIds(responseJson);
@@ -68,7 +73,12 @@ export default class OrdersList extends Component{
 		onOrderReadyAPICall = (orderId) => {
 			var type = this.props.type;
 			var url = Config.admin_orders_url+type+'/'+orderId;
-			fetch(url)
+			fetch(url,{
+				headers:{
+					'X-Authoriztion-Admin': Config.admin_pass
+				},
+				'timeout':1000*5,
+			})
 				.then((response) => {
 					this.removeOrder(orderId);
 					this.fetchNewOrders();
@@ -102,7 +112,6 @@ export default class OrdersList extends Component{
 								 				 onRefresh={this.onRefresh.bind(this)}
 								 				 />}
 							automaticallyAdjustContentInsets={false}
-							onScroll={() => { console.log('onScroll!'); }}
 							scrollEventThrottle={200}
 							style={styles.scrollView}>
 							{this.state.ordersIds.map(this.createOrderContainer)}
