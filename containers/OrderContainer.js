@@ -86,7 +86,7 @@ export default class OrderContainer extends Component{
 
 	extractValue = (order) =>{
 		const {userName,phoneNumber,timeForPickup,totalAmount,orderProducts} = order;
-		const trimPhoneNumber = '0' + phoneNumber.substring(4,phoneNumber.length);
+		const trimPhoneNumber = phoneNumber.substring(4,phoneNumber.length);
 		this.setState({userName,phoneNumber:trimPhoneNumber,timeForPickup,totalAmount,orderProducts})
 	}
 
