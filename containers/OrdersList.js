@@ -33,7 +33,7 @@ export default class OrdersList extends Component{
 		}
 
 		componentDidMount = () => {
-			//setInterval(this.fetchNewOrders.bind(this),this.state.frequency);
+			setInterval(this.fetchNewOrders.bind(this),this.state.frequency);
 			this.fetchNewOrders();
 		}
 
