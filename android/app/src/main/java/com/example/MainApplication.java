@@ -10,6 +10,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.github.xinthink.rnmk.ReactMaterialKitPackage;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
+import com.zmxv.RNSound.RNSoundPackage;
 
 
 import java.util.Arrays;
@@ -28,7 +29,8 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
           new ReactMaterialKitPackage(),
-          new ReactNativeConfigPackage()
+          new ReactNativeConfigPackage(),
+          new RNSoundPackage()
       );
     }
   };

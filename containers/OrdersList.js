@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import OrderContainer from './OrderContainer';
 import Config from 'react-native-config';
+var Sound = require('react-native-sound');
 
 import {
   Alert,	
@@ -22,14 +23,22 @@ export default class OrdersList extends Component{
 			super(props);
 			this.createOrderContainer = this.createOrderContainer.bind(this);
 			this.removeOrder = this.removeOrder.bind(this);
+			var whoosh = new Sound('notify.wav', Sound.MAIN_BUNDLE, (error) => {
+				if (error) {
+					console.log('failed to load the sound', error);
+					} else { // loaded successfully
+						console.log('duration in seconds: ' + whoosh.getDuration() + 'number of channels: ' + whoosh.getNumberOfChannels());
+					}
+				});
 			this.state = {
 				ordersIds:[],
 				isRefreshing: false,
 				frequency: 1000*60,
 				interval: 0,
+				whoosh: whoosh,
 			};
 
-
+			
 		}
 
 		componentDidMount = () => {
@@ -48,11 +57,27 @@ export default class OrdersList extends Component{
 			})
 				.then((response) => response.json())
 				.then((responseJson)=> {
+					this.checkForNewOrders(responseJson);
 					this.setOrderIds(responseJson);
 				})
 				.catch((err) => {
 					console.log(err);
 				});
+		}
+
+		checkForNewOrders(ordersIds){
+			if(this.props.type == 'new'){
+				if(this.state.ordersIds.toString() != ordersIds.toString()){
+					this.state.whoosh.play((success) => {
+						if (success) {
+							console.log('successfully finished playing');
+						} else {
+							console.log('playback failed due to audio decoding errors');
+						}
+					});
+
+				}
+			}
 		}
 
 		removeOrder(orderId){
