@@ -91,7 +91,7 @@ export default class OrderContainer extends Component{
 	}
 
 	render(){	
-		const {orderId,onOrderReady,type} = this.props;
+		const {orderId,onOrderReady,onOrderUntaken,type} = this.props;
 		return(
 			<View>
 				<TouchableNativeFeedback onPress={this._toggleExpanded} 
@@ -103,7 +103,7 @@ export default class OrderContainer extends Component{
 					</View>
 				</TouchableNativeFeedback>
 				<Collapsible collapsed={this.state.collapsed} align="center">
-					<Order type={type} totalAmount={this.state.totalAmount} orderId={orderId} onOrderReady={onOrderReady} products={this.state.orderProducts}/>
+					<Order type={type} totalAmount={this.state.totalAmount} orderId={orderId} onOrderReady={onOrderReady} onOrderUntaken={onOrderUntaken} products={this.state.orderProducts}/>
 				</Collapsible>
 			</View>
 		)

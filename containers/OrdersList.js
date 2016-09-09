@@ -87,16 +87,30 @@ export default class OrdersList extends Component{
 			this.setState({orderIds:ids});
 		}
 
+		onOrderUntaken = (orderId) => {
+			Alert.alert(
+				'ההזמנה תבוטל',
+				'אתה בטוח?',
+				[
+					{text:'אישור',onPress: () => this.onOrderReadyAPICall(orderId,'untaken')},
+					{text:'ביטול'}
+				]
+			)
+		}
+
 		onOrderReady = (orderId) => {
 			Alert.alert(
 				'הזמנה מוכנה',
 				'הודעה נשלחה ללקוח',
-				[{text:'אישור',onPress: () => this.onOrderReadyAPICall(orderId)}]
+				[{text:'אישור',onPress: () => this.onOrderReadyAPICall(orderId,this.props.type)}]
 			)
 		}
 
-		onOrderReadyAPICall = (orderId) => {
-			var type = this.props.type;
+		onOrderTaken = (orderId) => {
+			this.onOrderReadyAPICall(orderId,this.props.type);
+		}
+
+		onOrderReadyAPICall = (orderId,type) => {
 			var url = Config.admin_orders_url+type+'/'+orderId;
 			fetch(url,{
 				headers:{
@@ -120,8 +134,9 @@ export default class OrdersList extends Component{
 		}
 
 		createOrderContainer(orderId,index){
-			var handler = this.props.type == 'new' ? this.onOrderReady.bind(this) : this.onOrderReadyAPICall.bind(this)
-			return <OrderContainer key={index} orderId ={orderId} type={this.props.type} onOrderReady={handler}/>
+			var orderReadyHandler = this.props.type == 'new' ? this.onOrderReady.bind(this) : this.onOrderTaken.bind(this)
+			var orderUntakenHandler = this.onOrderUntaken.bind(this);
+			return <OrderContainer key={index} orderId ={orderId} type={this.props.type} onOrderReady={orderReadyHandler} onOrderUntaken={orderUntakenHandler}/>
 		}
 
 		onRefresh(){
